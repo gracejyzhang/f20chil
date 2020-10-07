@@ -1,0 +1,6 @@
+.ipynb_checkpoints/*
+venv/*
+.idea/*
+__pycache__/*
+reply_networks/*
+reddit_reply/*
