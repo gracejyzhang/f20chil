@@ -33,27 +33,26 @@ def process_dir(directory):
     return triads_df, info_df
 
 
-# process all files matching each expression as one graph
-def process_exp(expressions):
-    exp = []
-    triads = []
-    info = []
-    for expression in expressions:
-        print(expression)
-        exp.append(expression) # clean up expression
-        graph = nx.DiGraph()
-        for file in glob.glob(expression):
-            grow(file, graph)
-        triads.append(nx.triadic_census(graph))
-        info.append({'nodes':nx.number_of_nodes(graph), 'edges':nx.number_of_edges(graph)})
-    triads_df = pd.DataFrame(triads, index=exp)
-    info_df = pd.DataFrame(info, index=exp)
+# process all files as one graph
+def process_exp(files):
+    graph = nx.DiGraph()
+    for file in files:
+        grow(file, graph)
+    triads_df = pd.DataFrame([nx.triadic_census(graph)], index=[' + '.join(files)])
+    info_df = pd.DataFrame([{'nodes':nx.number_of_nodes(graph), 'edges':nx.number_of_edges(graph)}],
+                           index=[' + '.join(files)])
     return triads_df, info_df
 
 
 if __name__ == '__main__':
-    triads_df, info_df = process_exp(['reddit_reply/*'])
-    triads_df.to_csv('results/reddit_reply_overall_triads.csv')
-    info_df.to_csv('results/reddit_reply_overall_info.csv')
+    triads_df, info_df = process_exp(['reddit_reply/socialism.json', 'reddit_reply/Libertarian.json'])
+    triads_df.to_csv('results/socialism-libertarian.csv')
+    info_df.to_csv('results/socialism-libertarian_info.csv')
+
+    triads_df, info_df = process_exp(['reddit_reply/Republican.json', 'reddit_reply/Conservative.json', 'reddit_reply/conservatives.json'])
+    triads_df.to_csv('results/conservative-republican.csv')
+    info_df.to_csv('results/conservative-republican_info.csv')
+
+
 
 
