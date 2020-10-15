@@ -44,14 +44,21 @@ def process_exp(files):
     return triads_df, info_df
 
 
-if __name__ == '__main__':
-    triads_df, info_df = process_exp(['reddit_reply/socialism.json', 'reddit_reply/Libertarian.json'])
-    triads_df.to_csv('results/socialism-libertarian.csv')
-    info_df.to_csv('results/socialism-libertarian_info.csv')
+# process each file in a directory as independent graphs
+def process_append(directory, triads_file, info_file):
+    for filename in os.listdir(directory):
+        print(filename)
+        graph = nx.DiGraph()
+        grow(os.path.join(directory, filename), graph)
+        name = filename.replace('.json','')
+        triads_df = pd.DataFrame([nx.triadic_census(graph)], index=[name])
+        info_df = pd.DataFrame([{'nodes':nx.number_of_nodes(graph), 'edges':nx.number_of_edges(graph)}], index=[name])
+        triads_df.to_csv(triads_file, mode='a', header=False)
+        info_df.to_csv(info_file, mode='a', header=False)
 
-    triads_df, info_df = process_exp(['reddit_reply/Republican.json', 'reddit_reply/Conservative.json', 'reddit_reply/conservatives.json'])
-    triads_df.to_csv('results/conservative-republican.csv')
-    info_df.to_csv('results/conservative-republican_info.csv')
+
+if __name__ == '__main__':
+    process_append('reddit_reply_subset', 'results/reddit_reply_subset.csv', 'results/reddit_reply_subset_info.csv')
 
 
 

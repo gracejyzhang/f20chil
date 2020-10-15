@@ -2,5 +2,6 @@
 venv/*
 .idea/*
 __pycache__/*
-reply_networks/*
-reddit_reply/*
+reddit_reply_dataset/*
+reddit_reply_politics/*
+reddit_reply_subset/*
