@@ -1,7 +1,6 @@
 import networkx as nx
 import json
 import os
-import glob
 import pandas as pd
 
 
@@ -39,7 +38,7 @@ def process_exp(files):
     for file in files:
         grow(file, graph)
     triads_df = pd.DataFrame([nx.triadic_census(graph)], index=[' + '.join(files)])
-    info_df = pd.DataFrame([{'nodes':nx.number_of_nodes(graph), 'edges':nx.number_of_edges(graph)}],
+    info_df = pd.DataFrame([{'nodes': nx.number_of_nodes(graph), 'edges': nx.number_of_edges(graph)}],
                            index=[' + '.join(files)])
     return triads_df, info_df
 
@@ -58,7 +57,7 @@ def process_append(directory, triads_file, info_file):
 
 
 if __name__ == '__main__':
-    process_append('reddit_reply_subset', 'results/reddit_reply_subset.csv', 'results/reddit_reply_subset_info.csv')
+    process_append('reddit_reply_dataset', 'results/reddit_reply.csv', 'results/reddit_reply_info.csv')
 
 
 
