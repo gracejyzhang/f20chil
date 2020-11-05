@@ -8,3 +8,4 @@ reddit_reply_subset/*
 aws.pem
 aws_run.txt
 aws_processed/reddit_users.csv
+credentials.json
