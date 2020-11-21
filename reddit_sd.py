@@ -2,12 +2,18 @@ import networkx as nx
 import json
 import os
 import pandas as pd
+import sys
 
 
-dir = 'reddit_reply_dataset'
-triads_out = 'reddit.csv'
-info_out = 'reddit_info.csv'
-users_out = 'reddit_users.csv'
+dir = 'datasets/reddit_politics'
+triads_out = 'results/reddit_politics_sd/reddit.csv'
+info_out = 'results/reddit_politics_sd/reddit_info.csv'
+users_out = 'results/reddit_politics_sd/reddit_users.csv'
+
+try:
+    skip = set(map(lambda s: s.strip(), open('skip.txt').readlines()))
+except:
+    skip = set()
 
 
 def process_subreddit(file, triads, info, names, users):
@@ -32,17 +38,17 @@ def process_subreddit(file, triads, info, names, users):
 # process each file in a directory as independent graphs
 def process_dir():
     for file in os.listdir(dir):
-        try:
-            triads, info, names, users = [], [], [], set()
-            process_subreddit(file, triads, info, names, users)
-            triads_df = pd.DataFrame(triads, index=names)
-            info_df = pd.DataFrame(info, index=names)
-            triads_df.to_csv(triads_out, mode='a', header=False)
-            info_df.to_csv(info_out, mode='a', header=False)
-            process_users(file, users)
-            print(file)
-        except:
-            continue
+        if file in skip:
+          continue
+        triads, info, names, users = [], [], [], set()
+        process_subreddit(file, triads, info, names, users)
+        triads_df = pd.DataFrame(triads, index=names)
+        info_df = pd.DataFrame(info, index=names)
+        triads_df.to_csv(triads_out, mode='a', header=False)
+        info_df.to_csv(info_out, mode='a', header=False)
+        # process_users(file, users)
+        print(file)
+        sys.stdout.flush()
 
 
 def process_users(file, users):

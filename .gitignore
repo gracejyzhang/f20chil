@@ -2,10 +2,6 @@
 venv/*
 .idea/*
 __pycache__/*
-reddit_reply_dataset/*
-reddit_reply_politics/*
-reddit_reply_subset/*
-aws.pem
-aws_run.txt
-aws_processed/reddit_users.csv
-credentials.json
+datasets/*
+miscellaneous/*
+**/*users.csv

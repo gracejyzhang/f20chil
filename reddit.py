@@ -57,8 +57,4 @@ def process_append(directory, triads_file, info_file):
 
 
 if __name__ == '__main__':
-    process_append('reddit_reply_dataset', 'results/reddit_reply.csv', 'results/reddit_reply_info.csv')
-
-
-
-
+    process_append('datasets/reddit', 'results/reddit_reply.csv', 'results/reddit_reply_info.csv')
